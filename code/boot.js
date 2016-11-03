@@ -115,13 +115,21 @@ function createDefaultBaseMapLayers() {
   //OpenStreetMap attribution - required by several of the layers
   osmAttribution = 'Map data © OpenStreetMap contributors';
 
-  //MapQuest offer tiles - http://developer.mapquest.com/web/products/open/map
-  //their usage policy has no limits (except required notification above 4000 tiles/sec - we're perhaps at 50 tiles/sec based on CloudMade stats)
-  var mqSubdomains = [ 'otile1','otile2', 'otile3', 'otile4' ];
-  var mqTileUrlPrefix = window.location.protocol !== 'https:' ? 'http://{s}.mqcdn.com' : 'https://{s}-s.mqcdn.com';
-  var mqMapOpt = {attribution: osmAttribution+', Tiles Courtesy of MapQuest', maxNativeZoom: 18, maxZoom: 21, subdomains: mqSubdomains};
-  baseLayers['MapQuest OSM'] = new L.TileLayer(mqTileUrlPrefix+'/tiles/1.0.0/map/{z}/{x}/{y}.jpg',mqMapOpt);
+  // MapQuest - http://developer.mapquest.com/web/products/open/map
+  // now requires an API key
+  //var mqSubdomains = [ 'otile1','otile2', 'otile3', 'otile4' ];
+  //var mqTileUrlPrefix = window.location.protocol !== 'https:' ? 'http://{s}.mqcdn.com' : 'https://{s}-s.mqcdn.com';
+  //var mqMapOpt = {attribution: osmAttribution+', Tiles Courtesy of MapQuest', maxNativeZoom: 18, maxZoom: 21, subdomains: mqSubdomains};
+  //baseLayers['MapQuest OSM'] = new L.TileLayer(mqTileUrlPrefix+'/tiles/1.0.0/map/{z}/{x}/{y}.jpg',mqMapOpt);
 
+  // MapBox - https://www.mapbox.com/api-documentation/
+  // Access MapBox via the GNOME Project proxy.
+  // In the future, this URL will provide improved tiles from the GNOME Project with localized labels.
+  var gnomeStreetUrl = 'https://gis.gnome.org/tiles/street/v1/{z}/{x}/{y}';
+  var gnomeAerialUrl = 'https://gis.gnome.org/tiles/satellite/v1/{z}/{x}/{y}';
+  baseLayers['MapBox Street'] = L.tileLayer(gnomeStreetUrl);
+  baseLayers['MapBox Satellite'] = L.tileLayer(gnomeAerialUrl);
+  
   // cartodb has some nice tiles too - both dark and light subtle maps - http://cartodb.com/basemaps/
   // (not available over https though - not on the right domain name anyway)
   var cartoAttr = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
